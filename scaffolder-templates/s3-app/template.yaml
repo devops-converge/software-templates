@@ -1,0 +1,102 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: create-s3-bucket
+  title: Create a new application running on s3 
+  description: Create a new application running on s3
+  tags: ['recommended']
+spec:
+  owner: guests
+  type: service
+  parameters:
+    - title: S3 bucket creation
+      required:
+         - S3Name
+         - Region
+         
+      properties:
+        S3Name:
+          title: S3 bucket name.
+          type: string
+          description: Name of the S3 to be created.
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+
+        Region:
+          title:  AWS Region
+          type: string
+          description: Name of the region where you want to create your s3 bucket eg:- us-east-1, ap-south-1 etc.
+          default: us-east-1
+
+        action:
+          title: action
+          type: string
+          description: What action do you want to perform? Create or delete?
+          enum:
+            - apply
+            - destroy
+          default: apply   
+
+    - title: Choose a Repository Location
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Location of the repository
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  steps:
+# Getting the all the files/details from the template
+    - id: fetch-base
+      name: Fetching Details from content folder
+      action: fetch:template
+      input:
+        url: ./content  # Location of the content directory where catlog-info.yaml file is present for the template
+        values:
+          name: ${{ parameters.S3Name}}
+
+# Publish the content of the current working directory to our github directory
+    - id: publish
+      name: Publishing Details
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: This repo is to create an ec2 instance ${{ parameters.InstanceName }} using backstage.
+        repoUrl: ${{ parameters.repoUrl }}
+        repoVisibility: public # or 'internal' or 'private'
+        # defaultBranch: master
+
+# Triggering CI-CD to create resource in our case github action. 
+    - id: github-action
+      name: Starting GitHub action
+      action: github:actions:dispatch
+      input:
+        workflowId:  terraform.yaml # ID of GitHub action WorkFlow
+        repoUrl: 'github.com?repo=idp-terraform&owner=devops-converge'
+        branchOrTagName: 'main'
+        workflowInputs:
+          S3Name: ${{ parameters.S3Name }}
+          awsRegion: ${{ parameters.Region }}
+          action: ${{ parameters.action }}
+
+# Registering new component in the catalog of backstage.
+    - id: register
+      name: Registering the new Component 
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: '/component-info.yaml' # where the info of the catalog is stored.
+
+# Output links  are displayed to the user after the template execution.
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}
