@@ -87,8 +87,6 @@ spec:
             allowedHosts:
               - github.com
               - dev.azure.com
-            allowedOrganizations:
-              - devops-converge  
 
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
