@@ -86,6 +86,7 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
+              - dev.azure.com
 
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
@@ -104,7 +105,6 @@ spec:
           lombok: ${{ parameters.lombok }}
           metrics: ${{ parameters.metrics }}
           owner: ${{ parameters.owner }}
-        #  destination: ${{ parameters.repoUrl | parseRepoUrl }}
 
     # This step publishes the contents of the working directory to GitHub.
     - id: publish
