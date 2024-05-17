@@ -7,7 +7,7 @@ on:
     branches: [ '**' ]  # This listens to PRs targeting all branches
     
 jobs:
-  build:https://github.com/devops-converge/idp-ec2-creation/settings
+  build:
     runs-on: ubuntu-latest
 
     steps:
