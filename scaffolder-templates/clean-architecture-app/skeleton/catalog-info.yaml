@@ -3,9 +3,9 @@ kind: Component
 metadata:
   name: ${{ values.name | dump }}
   annotations:
-    #github.com/project-slug: ${{values.destination.owner + "/" + values.destination.repo}}
+    github.com/project-slug: ${{values.destination.owner + "/" + values.destination.repo}}
     #github.com/project-slug: '{{ parameters.repoUrl | parseRepoUrl }}'
-    github.com/project-slug: ${{ (parameters.repoUrl | parseRepoUrl)['owner'] + "/" + (parameters.repoUrl | parseRepoUrl)['repo'] }}
+    #github.com/project-slug: ${{ (parameters.repoUrl | parseRepoUrl)['owner'] + "/" + (parameters.repoUrl | parseRepoUrl)['repo'] }}
     backstage.io/techdocs-ref: dir:.
 spec:
   type: service
