@@ -57,6 +57,8 @@ spec:
       action: fetch:template
       input:
         url: ./content  # Location of the content directory where catlog-info.yaml file is present for the template
+        copyWithoutRender:
+          - .github/workflows/*
         values:
           name: ${{ parameters.S3Name}}
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
