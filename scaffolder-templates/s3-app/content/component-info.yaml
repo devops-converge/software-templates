@@ -3,7 +3,8 @@ kind: Component
 metadata:
   name: ${{ values.name | dump }}
   annotations:
-    github.com/project-slug: devops-converge/idp-terraform
+    #github.com/project-slug: devops-converge/idp-terraform
+    github.com/project-slug: ${{values.destination.owner + "/" + values.destination.repo}}
     backstage.io/techdocs-ref: dir:.
   #title: 'IA for S3 Automation' # you can give any title
   title: ${{ values.name | dump }} 
