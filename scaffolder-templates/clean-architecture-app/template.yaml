@@ -97,6 +97,8 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
+        copyWithoutRender:
+          - .github/workflows/*
         values:
           name: ${{ parameters.name }}
           package: ${{ parameters.package }}
@@ -105,6 +107,7 @@ spec:
           lombok: ${{ parameters.lombok }}
           metrics: ${{ parameters.metrics }}
           owner: ${{ parameters.owner }}
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}
 
     # This step publishes the contents of the working directory to GitHub.
     - id: publish
