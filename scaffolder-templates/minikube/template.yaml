@@ -23,7 +23,7 @@ spec:
           ui:options:
             rows: 5
 
-        Replica:
+        NameSpace:
           title:  NameSpace
           type: string
           description: Name Space
