@@ -48,10 +48,11 @@ spec:
       action: fetch:template
       input:
         url: ./content  # Location of the content directory where catlog-info.yaml file is present for the template
-        copyWithoutRender:
-          - .github/workflows/*
+        # copyWithoutRender:
+        #   - .github/workflows/*
         values:
           name: ${{ parameters.AppName}}
+          nameSpace: ${{ parameters.NameSpace}}
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
 
 # Publish the content of the current working directory to our github directory
