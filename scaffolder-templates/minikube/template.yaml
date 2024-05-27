@@ -12,7 +12,7 @@ spec:
     - title: Application Name
       required:
          - AppName
-         - Replica
+         - NameSpace
          
       properties:
         AppName:
@@ -24,10 +24,10 @@ spec:
             rows: 5
 
         Replica:
-          title:  Replica
+          title:  NameSpace
           type: string
-          description: Number of replica
-          default: 1
+          description: Name Space
+          default: "default"
 
     - title: Choose a Repository Location
       required:
