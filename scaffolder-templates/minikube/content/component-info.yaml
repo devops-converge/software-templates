@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.name | dump }}
+  annotations:
+    github.com/project-slug: ${{values.destination.owner + "/" + values.destination.repo}}
+    backstage.io/techdocs-ref: dir:.
+  #title: 'IA for S3 Automation' # you can give any title
+  title: ${{ values.name | dump }} 
+  description: An example of a S3 Creation. # Change Description accordingly
+spec:
+  type: service
+  owner: user:guest
+  lifecycle: experimental
