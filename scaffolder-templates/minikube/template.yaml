@@ -24,9 +24,9 @@ spec:
             rows: 5
 
         NameSpace:
-          title:  NameSpace
+          title:  Name Space
           type: string
-          description: Name Space
+          description: Name Space where the application to be created
           default: "default"
 
     - title: Choose a Repository Location
