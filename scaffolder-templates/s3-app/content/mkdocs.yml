@@ -3,6 +3,9 @@ site_description: ${{values.description | dump}}
 
 nav:
   - Introduction: index.md
+  - Subpage: sub-page.md
+  - 'Code Sample': code/code-sample.md
+
 
 plugins:
   - techdocs-core
