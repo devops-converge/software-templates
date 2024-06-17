@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: {{cookiecutter.component_id | jsonify}}
+  description: {{cookiecutter.description | jsonify}}
+  links:
+    - url: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-hello-world.html
+      title: Deploying a hello world serverless application      
+  annotations:
+    github.com/project-slug: {{cookiecutter.destination.owner + "/" + cookiecutter.destination.repo}}
+    backstage.io/techdocs-ref: dir:.
+spec:
+  type: service
+  lifecycle: experimental
+  owner: {{cookiecutter.owner | jsonify}}
