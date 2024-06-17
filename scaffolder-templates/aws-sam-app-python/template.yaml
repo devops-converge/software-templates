@@ -1,55 +1,42 @@
-#apiVersion: backstage.io/v1beta2
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: aws-sam-template
-  title: AWS SAM template for Python
-  description: Creates a new AWS SAM Python application
+  name: create-react-app-template
+  title: Create React App Template
+  description: Create a new CRA website project
   tags:
-    - recommended
-    - python    
+    - react
+    - cra
 spec:
-  owner: harrajag@amazon.com
-  type: service
-  
+  owner: web@example.com
+  type: website
   parameters:
     - title: Provide some simple information
       required:
-        - component_id        
-        - region            
-        - owner 
+        - component_id
+        - owner
       properties:
         component_id:
           title: Name
           type: string
-          description: Unique name of the component        
+          description: Unique name of the component
+          ui:field: EntityNamePicker
         description:
           title: Description
           type: string
-          description: Help others understand what this component is for.
-        include_safe_deployment:
-          title: Include Safe deployment
-          type: boolean
-          description: Sends by default 10% of traffic for every 1 minute to a newly deployed function using CodeDeploy + SAM integration - Linear10PercentEvery1Minute
-        region:
-          title: AWS region
-          type: string
-          description: AWS region in which the stack will be deployed  
-          enum:
-            - us-east-1
-            - us-east-2 
+          description: Help others understand what this website is for.
         owner:
           title: Owner
           type: string
           description: Owner of the component
           ui:field: OwnerPicker
           ui:options:
-            allowedKinds: 
-              - Group    
-    - title: Choose a location  
+            allowedKinds:
+              - Group
+    - title: Choose a location
       required:
         - repoUrl
-      properties: 
+      properties:
         repoUrl:
           title: Repository Location
           type: string
@@ -60,36 +47,37 @@ spec:
   steps:
     - id: template
       name: Fetch Skeleton + Template
-      # action: fetch:cookiecutter
       action: fetch:template
-      input:        
+      input:
         url: ./skeleton
-        # copyWithoutRender:
-        copyWithoutTemplating:
+        copyWithoutRender:
           - .github/workflows/*
         values:
-          component_id: '{{ parameters.component_id }}'          
-          include_safe_deployment: '{{ parameters.include_safe_deployment }}'
-          region: '{{ parameters.region }}'
-          description: '{{ parameters.description }}'
-          owner: '{{ parameters.owner }}'
-          destination: '{{ parseRepoUrl parameters.repoUrl }}'
-   
+          component_id: ${{ parameters.component_id }}
+          description: ${{ parameters.description }}
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}
+          owner: ${{ parameters.owner }}
+
     - id: publish
       name: Publish
       action: publish:github
       input:
-        allowedHosts: ['github.com']
-        description: '{{ parameters.description }}'
-        repoUrl: '{{ parameters.repoUrl }}'
+        allowedHosts:
+          - github.com
+        description: This is ${{ parameters.component_id }}
+        repoUrl: ${{ parameters.repoUrl }}
 
     - id: register
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: '{{ steps.publish.output.repoContentsUrl }}'
-        catalogInfoPath: '/catalog-info.yaml'
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml"
 
   output:
-    remoteUrl: '{{ steps.publish.output.remoteUrl }}'
-    entityRef: '{{ steps.register.output.entityRef }}'
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}
