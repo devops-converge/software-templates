@@ -16,7 +16,8 @@ spec:
     - title: Provide some simple information
       required:
         - component_id        
-        - region             
+        - region            
+        - owner 
       properties:
         component_id:
           title: Name
@@ -36,17 +37,7 @@ spec:
           description: AWS region in which the stack will be deployed  
           enum:
             - us-east-1
-            - us-east-2
-            - us-west-1
-            - us-west-2
-            - eu-west-1
-            - eu-west-2
-            - eu-west-3
-            - eu-north-1
-            - ap-east-1
-            - ap-south-1
-            - ap-southeast-1
-            - ap-southeast-2
+            - us-east-2 
         owner:
           title: Owner
           type: string
